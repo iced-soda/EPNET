@@ -16,7 +16,7 @@ data_base = {'id': 'ALL', 'type': 'prostate_paper',
              }
 data = [data_base]
 
-n_hidden_layers = 2 # 5
+n_hidden_layers = 5
 base_dropout = 0.5
 wregs = [0.001] * 7
 wregs = [0.001] * 7
@@ -50,7 +50,7 @@ nn_pathway = {
                                       select_best_model=False,
                                       monitor= 'val_o6_f1',
                                       verbose=2,
-                                      epoch=100, # 300
+                                      epoch=300,
                                       shuffle=True,
                                       batch_size=100, #50
                                       save_name='pnet',
