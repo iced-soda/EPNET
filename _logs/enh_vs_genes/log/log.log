@@ -1,50 +1,7 @@
-11/29 06:19 - {logs.py:22} - setting logs
-11/29 06:20 - {data_reader.py:100} - loading enh_vs_genes
-11/29 06:20 - {data_reader.py:31} - loading data from /PROJECTS/Sally/PNET_py3_enh_gene/_database/enh_vs_genes/Enh_vs_Genes_matrix_number.txt,
-11/29 06:29 - {data_reader.py:38} - (73347, 30781)
-11/29 06:29 - {data_reader.py:216} - loading response from Enh_vs_Genes_interactions_1Oct.txt
-11/29 06:29 - {data_reader.py:69} - loaded data 73347 samples, 30781 variables, 73347 responses 
-11/29 06:29 - {data_reader.py:70} - 30781
-11/29 06:30 - {nn.py:117} - class_weight None
-11/29 06:30 - {data_reader.py:100} - loading enh_vs_genes
-11/29 06:30 - {data_reader.py:31} - loading data from /PROJECTS/Sally/PNET_py3_enh_gene/_database/enh_vs_genes/Enh_vs_Genes_matrix_number.txt,
-11/29 06:30 - {data_reader.py:33} - loading from memory cached_data
-11/29 06:30 - {data_reader.py:38} - (73347, 30781)
-11/29 06:30 - {data_reader.py:41} - loading from memory cached_data
-11/29 06:35 - {data_reader.py:69} - loaded data 73347 samples, 30781 variables, 73347 responses 
-11/29 06:35 - {data_reader.py:70} - 30781
-11/29 06:36 - {prostate_models.py:125} - x shape (73347, 30781) , y shape (73347,) info (73347,) genes (30781,)
-11/29 06:36 - {prostate_models.py:127} - x shape (73347, 30781) , y shape (73347,) info (73347,) genes (30781,)
-11/29 06:37 - {builders_utils.py:65} - layer 0 , # of edges  0.0
-11/29 06:37 - {builders_utils.py:65} - layer 1 , # of edges  147.0
-11/29 06:37 - {builders_utils.py:65} - layer 2 , # of edges  26.0
-11/29 06:37 - {builders_utils.py:215} - n_genes, n_pathways 30781 146 
-11/29 06:37 - {builders_utils.py:215} - n_genes, n_pathways 146 26 
-11/29 06:37 - {prostate_models.py:188} - done compiling
-11/29 06:37 - {model_utils.py:36} -   - 0 inputs [(None, 30781)]
-11/29 06:37 - {model_utils.py:36} -   - 1 h0 (None, 30781)
-11/29 06:37 - {model_utils.py:36} -   - 2 dropout_0 (None, 30781)
-11/29 06:37 - {model_utils.py:36} -   - 3 h1 (None, 146)
-11/29 06:37 - {model_utils.py:36} -   - 4 dropout_1 (None, 146)
-11/29 06:37 - {model_utils.py:36} -   - 5 h2 (None, 26)
-11/29 06:37 - {model_utils.py:36} -   - 6 o_linear1 (None, 1)
-11/29 06:37 - {model_utils.py:36} -   - 7 o_linear2 (None, 1)
-11/29 06:37 - {model_utils.py:36} -   - 8 o_linear3 (None, 1)
-11/29 06:37 - {model_utils.py:36} -   - 9 o1 (None, 1)
-11/29 06:37 - {model_utils.py:36} -   - 10 o2 (None, 1)
-11/29 06:37 - {model_utils.py:36} -   - 11 o3 (None, 1)
-11/29 06:37 - {prostate_models.py:192} - None
-11/29 06:37 - {prostate_models.py:193} - # of trainable params of the model is 92837
-11/29 06:37 - {nn.py:203} - start fitting
-11/29 06:37 - {nn.py:220} - class_weight None
-11/29 06:59 - {nn.py:287} - prediction threshold 0.4999999999999998
-11/29 07:00 - {4143306655.py:18} -               precision    recall  f1-score   support
-
-           0       0.84      0.99      0.91      3666
-           1       0.99      0.81      0.89      3669
-
-    accuracy                           0.90      7335
-   macro avg       0.91      0.90      0.90      7335
-weighted avg       0.91      0.90      0.90      7335
-
-11/29 07:00 - {4143306655.py:52} - Test score {'accuracy': 0.9004771642808452, 'precision': 0.9906510851419031, 'auc': 0.9029475663232905, 'f1': 0.8904561824729892, 'aupr': 0.9189341548199839, 'recall': 0.8086672117743254}
+12/01 04:15 - {logs.py:22} - setting logs
+12/01 04:15 - {data_reader.py:100} - loading enh_vs_genes
+12/01 04:15 - {data_reader.py:31} - loading data from /PROJECTS/Sally/PNET_py3_enh_gene/_database/enh_vs_genes/Enh_vs_Genes_matrix_number.txt,
+12/01 04:24 - {data_reader.py:38} - (73347, 30781)
+12/01 04:24 - {data_reader.py:207} - loading response from Enh_vs_Genes_interactions_1Oct.txt
+12/01 04:24 - {data_reader.py:69} - loaded data 73347 samples, 30781 variables, 73347 responses 
+12/01 04:24 - {data_reader.py:70} - 30781
