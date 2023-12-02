@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Template Altered from --> 
+<head>
+<title>Web-based tool to investigate Enhancer Signals</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  body {font-family: "Lato", sans-serif}
+  .mySlides {display: none}
+
+  /* .input-container {
+    display: flex;
+    align-items: center;
+  } */
+
+  /* Style for the error message */
+  .error-message {
+    display: none; /* Initially hide the error message */
+    white-space: nowrap; /* Prevent line breaks */
+  }
+
+  /* Style for error messages */
+  .red{
+    color: red;
+  }
+
+  /* Style for non-error messages */
+  .green{
+    color: green;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+    <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
+    <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:2000px;margin-top:46px">
+  <div class="w3-content w3-padding-64" id="welcome">
+    <h2 style="font-weight: 500;">Please Upload your gene files here: </h2>
+    <p>A description of what kind of file it will accept</p>
+    <form id="predictionForm">
+        <input class="w3-button w3-light-grey" type="file" id="fileInput" name="fileInput" accept=".csv, .txt" required>
+        <button class="w3-button w3-light-grey" onclick="displayFileContents()">Upload</button>  <!-- Here to store to the backend? -->
+    </form>
+    <h3>File Contents Preview:</h2>
+    <pre id="inputShape"></pre> 
+    <pre id="fileContents"></pre>
+    <button class="w3-button w3-light-grey" onclick="makePrediction()" style="color: blueviolet">Run the Model</button>
+    <h3>Prediction:</h3>
+    <pre id="prediction"></pre>
+
+    <script>
+      function makePrediction() {
+        // Get input file from the form
+        const fileInput = document.getElementById('fileInput');
+        
+        // Create a FormData object to handle file uploads
+        const formData = new FormData();
+        formData.append('fileInput', fileInput.files[0]);
+
+        // Make a POST request to the Flask backend with the FormData
+        fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json()) // Parse the JSON from the response
+        .then(data => {
+          // Display the prediction result on the webpage
+          const predictionResultElement = document.getElementById('prediction');
+          predictionResultElement.textContent = JSON.stringify(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle errors if needed
+        });
+      }
+
+    function displayFileContents() {
+      const fileInput = document.getElementById('fileInput');
+      const fileContentsElement = document.getElementById('fileContents');
+      const inputShapeElement = document.getElementById('inputShape');
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        // Display the file contents
+        const fileContents = e.target.result;
+        fileContentsElement.textContent = fileContents;
+
+        // Calculate the number of rows and columns
+        const rows = fileContents.split('\n').length;
+        const columns = fileContents.split('\n')[0].split('\t').length;
+
+        // Display the file information
+        inputShapeElement.textContent = `Rows: ${rows}\nColumns: ${columns}`;
+      };
+
+      // Read the file as text
+      reader.readAsText(file);
+
+      // Prevent the form from submitting (prevents page refresh)
+      event.preventDefault();
+    }
+    </script>
+  </div>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <div class="w3-row">
+    <div class="w3-center w3-large w3-margin-bottom">
+      <i class="w3-center">Biomedical Machine Learning Lab (BML)</i><br>
+      <i class="w3-center fa fa-map-marker" style="width:30px"></i> 518, Samuels Building, F25, Samuel Terry Ave, Kensington NSW 2052<br>
+      <i class="w3-center fa fa-phone" style="width:30px"></i> Phone: +61 123 456 789<br>
+      <i class="w3-center fa fa-envelope" style="width:30px"> </i> Email: <a href="healthcodex@gmail.com">healthcodex@gmail.com</a><br>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

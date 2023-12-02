@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Template Altered from --> 
+<head>
+<title>Health CodeX Workshop 2023 Plenary Session Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+    <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
+    <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+  </div>
+</div>
+
+<div class="w3-content w3-center" style="max-width:2000px;margin-top:46px">
+  <h4>Registration Successful!</h4>
+ <div id="firstname-output"></div>
+ <div id="lastname-output"></div>
+ <div id="email-output"></div>
+ <div id="dob-output"></div>
+ <div id="gender-output"></div>
+  <h4><a href="index.html">Back</a></h4>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const firstname = params.get('firstname');
+    const lastname = params.get('lastname');
+    const email = params.get('email');
+    const dob = params.get('dob'); 
+    const gender = params.get('Gender'); 
+
+       if (firstname) {
+           document.getElementById('firstname-output').textContent = `Firstname: ${firstname}`;
+       }
+
+       if (lastname) {
+           document.getElementById('lastname-output').textContent = `Lastname: ${lastname}`;
+       }
+
+       if (email) {
+           document.getElementById('email-output').textContent = `Email: ${email}`;
+       }
+
+       if (dob) {
+           document.getElementById('dob-output').textContent = `DOB: ${dob}`;
+       }
+       if (gender) {
+           document.getElementById('gender-output').textContent = `Gender: ${gender}`;
+       }
+ </script>
+
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+    <div class="w3-row">
+      <div class="w3-center w3-large w3-margin-bottom">
+        <i class="w3-center"> Health CodeX Workshop 2023</i><br>
+        <i class="w3-center fa fa-map-marker" style="width:30px"></i> 518, Samuels Building, F25, Samuel Terry Ave, Kensington NSW 2052<br>
+        <i class="w3-center fa fa-phone" style="width:30px"></i> Phone: +61 123 456 789<br>
+        <i class="w3-center fa fa-envelope" style="width:30px"> </i> Email: <a href="healthcodex@gmail.com">healthcodex@gmail.com</a><br>
+      </div>
+    </div>
+  </footer>
+
+  
