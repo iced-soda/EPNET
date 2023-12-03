@@ -1,7 +1,7 @@
 
-# Biologically Informed Deep Neural Network for Prostate Cancer Classification and Discovery
+# Biologically Informed Deep Neural Network to Interpret Non-coding Chromatin Interactions
 
-This repository contains the source code and data files for a biologically informed deep neural network designed for prostate cancer classification and discovery.
+This repository contains the source code and data files for a biologically informed deep neural network designed for the interpretation of enhancer-promoter interactions.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Make sure you have Python 3 installed. You can find the list of required package
 1. Clone the repository:
 
    ```
-   git clone https://github.com/Hosseini7798/PNET_py3.git
+   git clone https://github.com/iced-soda/EPNET
    ```
 
 2. Depending on your intended use, you might need to download one or more of the following:
@@ -29,7 +29,7 @@ Make sure you have Python 3 installed. You can find the list of required package
 
 ## Usage
 
-Open the `simple_training.ipynb` notebook.
+Run the `simple_training.ipynb` notebook.
 
 ## Contributing
 
