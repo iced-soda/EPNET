@@ -9,6 +9,7 @@ from copy import deepcopy
 from model import nn
 from flask import Flask
 from flask_cors import CORS
+import json
 
 # login and password 
 from flask_sqlalchemy import SQLAlchemy
@@ -96,9 +97,9 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             session['user_id'] = user.id
-            return redirect(url_for('index'))
+            return json.dumps(True)
         else:
-            return 'Invalid username or password'
+            return json.dumps(False)
     return render_template('index.html')
 
 @app.route('/regsuccess')
