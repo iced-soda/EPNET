@@ -1,0 +1,11 @@
+patient_id,clinican_id,first_name,last_name,diagnosis
+1,1,John,Black,Prostate cancer
+2,1,Jo ,Pink,Prostate cancer
+3,2,Julian,Waters,Breast Cancer
+4,2,Xiaohong,Doe,Breast Cancer
+5,2,Jane,Doe,Breast Cancer
+6,3,Li,Doe,Blood Cancer
+7,4,Charlie,Doe,Breast Cancer
+8,4,Vivian,Doe,Lung cancer
+9,5,Jane,Doe,Breast Cancer
+10,6,Fall,Doe,Prostate cancer

@@ -1,0 +1,12 @@
+clinicianID,first_name,last_name,gender,job_title,institute,specialties
+1,John,Doe,Male,Medical Oncologist (Cancer Specialist),UNSW,cancer
+2,Jane,White,Female,Medical Oncologist (Cancer Specialist),UNSW,
+3,John,Johnson,Male,"Haematologist (Blood Disorders Specialist),ÊMedical Oncologist (Cancer Specialist)",UNSW,MRI
+4,Jennifer,Flood,Female,Medical Oncologist (Cancer Specialist),University of Sydney,
+5,Xiaoming,Li,Male,Medical Oncologist (Cancer Specialist),University of Sydney,"Breast cancer, lung cancer and supportive care and Pallative care."
+6,Bill,White,Prefer Not to Say,Medical Oncologist (Cancer Specialist),UTS,
+7,Hong,Sun,Male,Medical Oncologist (Cancer Specialist),UTS,fMRI
+8,Laxus,Liang,Male,"Haematologist (Blood Disorders Specialist),ÊMedical Oncologist (Cancer Specialist)",UNSW,
+9,Josephine,Black,Female,Medical Oncologist (Cancer Specialist),UTS,Single Cell Analysis
+10,James,Green,Male,Medical Oncologist (Cancer Specialist),UTS,Single Cell Analysis
+11,Jane,White,Female,Medical Oncologist (Cancer Specialist),Western Australia Univerity,

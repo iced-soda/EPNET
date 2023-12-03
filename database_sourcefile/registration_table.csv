@@ -1,0 +1,12 @@
+UserID,Email Address,password,First Name,Last Name,Gender,DOB,Institute
+1,john.d@gmail.com,19ABab12,John,Doe,Male,10/21/1998,UNSW
+2,jane.w@gmail.com,49GN394dd,Jane,White,Female,10/21/1999,UNSW
+3,m.j@gmail.com,55KK559gg,John,Johnson,Male,3/4/70,UNSW
+4,j.f@gmail.com,11BB33cc,Jennifer,Flood,Female,4/5/64,University of Sydney
+5,xiaoming@gmail.com,55KK559FD,Xiaoming,Li,Male,5/10/00,University of Sydney
+6,billw@gmail.com,55KK559FD,Bill,White,Prefer Not to Say,10/8/96,UTS
+7,hong.s@gmail.com,55KK559FD,Hong,Sun,Male,24/12/98,UTS
+8,laxus@gmail.com,55KK559FD,Laxus,Liang,Male,21/10/97,UNSW
+9,joseblack@gmail.com,55KK559FD,Josephine,Black,Female,21/4/97,UTS
+10,james.g@gmail.com,55KK559FD,James,Green,Male,7/10/70,UTS
+11,jw1234@gmail.com,49GN394dd,Jane,White,Female,10/21/1999,Western Australia Univerity

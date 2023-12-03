@@ -44,6 +44,7 @@
     <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
     <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
     <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+    <a href="login.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN/REGISTER</a>
   </div>
 </div>
 
@@ -71,8 +72,16 @@
 
  <!-- The Registration Section -->
   <div class="w3-content w3-black w3-center w3-padding-64" style="max-width:800px" id="registration">
-    <h2 class="w3-wide w3-center">Please Register Your Information Here</h2>
+    <h2 class="w3-wide w3-center">Please Login Here</h2>
     <div class="w3-container w3-center">
+      <form>
+        <label for="email">Email:</label>
+        <input class="w3-border" type="text" id="email" name="email">
+        <label for="password">Password:</label>
+        <input class="w3-border" type="password" id="password" name="password">
+        <button class="w3-button w3-light-grey" onclick="displayFileContents()">Login</button>  <!-- Here to store to the backend? -->
+    </form>
+      <p>Doesn't have an account? </p>
       <button class="w3-button w3-light-grey" onclick="document.getElementById('registrationModal').style.display='block'">Register Here</button>
     </div>
   </div>
@@ -277,6 +286,8 @@ function validateForm() {
     return false;
   } else {
     console.log("Nothing wrong")
+
+    // Here should save to 
     return true;
   }
 }
@@ -292,7 +303,7 @@ function validateForm() {
         <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Registration</h2>
       </header>
 
-      <form id="registrationForm" onsubmit="return validateForm()" method="GET" action="regSuccess.html">
+      <form id="registrationForm" onsubmit="return validateForm()" method="POST">
         <div class="w3-container" id="login-info">
           <h4 class="w3-wide">Login Information</h4>
           <p><label>Email Address</label></p>
@@ -329,13 +340,15 @@ function validateForm() {
               <option value="other">Other</option>
               <option value="not">Prefer Not to Say</option>
             </select>
-          <p><label for="marketing"> Would you like to receive marketing material for this conference?</label>
-          <input type="checkbox" id="marketing"> </p>
+            <!--Fields that are not required and need to be validated-->
+            <p><label>Institution</label></p>
+            <input class="w3-input w3-border" id="dob" name="institution" type="text" maxlength="10" placeholder="Enter Institution">
+            <p><label>Specialties</label></p>
+            <input class="w3-input w3-border" id="dob" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
         </div>
        
         <button class="w3-button w3-block w3-light-grey w3-padding-16 w3-section w3-right" onclick="validateForm()">REGISTER <i class="fa fa-check"></i></button>
         <button class="w3-button w3-red w3-section" onclick="document.getElementById('registrationModal').style.display='none'">Close <i class="fa fa-remove"></i></button>
-        <p class="w3-right">Need <a href="#" class="w3-tesxt-blue">help?</a></p>
       </form>
     </div>
   </div>
