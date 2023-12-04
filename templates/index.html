@@ -75,9 +75,9 @@
     <div class="w3-container w3-center">
       <form id="loginForm" onsubmit="checkPassword()">
         <label for="email">Email:</label>
-        <input class="w3-border" type="text" id="email-input" name="email">
+        <input class="w3-border" type="text" id="email-input" name="email-input">
         <label for="password">Password:</label>
-        <input class="w3-border" type="password" id="password-input" name="password">
+        <input class="w3-border" type="password" id="password-input" name="password-input">
         <input class="w3-button w3-light-grey" type="submit" value="Login">
     </form>
       <p>Doesn't have an account? </p>
@@ -275,6 +275,12 @@ function validateForm(event) {
   var dobInput = document.getElementById("dob");
   var isValidDob = validateDateOfBirth(dobInput);
 
+  var genderInput = document.getElementById("gender");
+
+  var instInput = document.getElementById("institution");
+
+  var specialtiesInput = document.getElementById("specialties");
+  
   if (isValidEmail === false ||
     isValidPassword === false ||
     isValidReenter === false ||

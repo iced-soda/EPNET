@@ -1,4 +1,4 @@
-patient_id,clinican_id,first_name,last_name,diagnosis
+patientID,clinicanID,first_name,last_name,diagnosis
 1,1,John,Black,Prostate cancer
 2,1,Jo ,Pink,Prostate cancer
 3,2,Julian,Waters,Breast Cancer
