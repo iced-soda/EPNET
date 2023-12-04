@@ -73,7 +73,7 @@
         formData.append('fileInput', fileInput.files[0]);
 
         // Make a POST request to the Flask backend with the FormData
-        fetch('http://127.0.0.1:5000/predict', {
+        fetch('/predict', {
           method: 'POST',
           body: formData,
         })

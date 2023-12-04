@@ -9,21 +9,28 @@ from copy import deepcopy
 from model import nn
 from flask import Flask
 from flask_cors import CORS
+import json
 
 # login and password 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
-CORS(app)
-
 # Add the project root directory to the system path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_root)
 
-filename = 'EPNET/_logs/enh_vs_genes/log/fs/P-net.h5'
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(project_root, 'backend_database.sql')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+CORS(app)
 
-params_file = 'EPNET/train/params/P1000/pnet/onsplit_average_reg_10_tanh_large_testing.py'
+filename = './_logs/enh_vs_genes/log/fs/P-net.h5'
+
+params_file = './train/params/P1000/pnet/onsplit_average_reg_10_tanh_large_testing.py'
+
+# load db
+print("linking to database")
+db = SQLAlchemy(app)
 
 # load model 
 print("1")
@@ -32,12 +39,6 @@ params = loader.load_module()
 model_params_ = deepcopy(params.models[0])
 model = nn.Model(**model_params_['params'])
 model.load_model(filename)
-
-# load db
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend_database.sql'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 
 # Set the upload folder
 # UPLOAD_FOLDER = '~/9450/9450_MainProjectWeb/uploads'
@@ -50,15 +51,27 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     gender = db.Column(db.String(100), nullable=False)
     dob = db.Column(db.String(100), nullable=False)
-    institute = db.Column(db.String(200), nullable=False)
-    specialties = db.Column(db.String(200), nullable=False)
-    password_hash = db.Column(db.String(120), nullable=False)
+    institute = db.Column(db.String(200), nullable=True)
+    specialties = db.Column(db.String(200), nullable=True)
+    password = db.Column(db.String(120), nullable=False)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(self.password, password)
+
+class Clinician(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    gender = db.Column(db.String(100), nullable=False)
+    job_title = db.Column(db.String(100), nullable=False)
+    institute = db.Column(db.String(200), nullable=True)
+    specialties = db.Column(db.String(200), nullable=True)
+
+with app.app_context():
+    db.create_all()
 
 # Function to check if the file extension is allowed
 def allowed_file(filename):
@@ -70,42 +83,53 @@ def allowed_file(filename):
 #     return render_template('run_model.html')
 
 ### Login Routes ###
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        first_name = request.form['firstname']
-        last_name = request.form['lastname']
-        gender = request.form['gender']
-        dob = request.form['dob']
-        institute = request.form['institute']
-        specialties = request.form['specialties']
-        user = User(email=email, first_name=first_name, last_name=last_name, gender=gender, dob=dob, institute=institute,specialties=specialties)
-        user.set_password(password)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('reg_success'), email=email, first_name=first_name)
-    return render_template('index.html')
+
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    first_name = data['firstname']
+    last_name = data['lastname']
+    gender = data['gender']
+    dob = data['dob']
+    institute = data['institute']
+    specialties = data['specialties']
+    user = User(email=email, first_name=first_name, last_name=last_name, gender=gender, dob=dob, institute=institute, specialties=specialties)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"message": "Registration successful", "redirect": url_for('reg_success')})
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Going here to login")
+    data = request.get_json()
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = data['email']
+        password = data['password']
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             session['user_id'] = user.id
-            return redirect(url_for('index'))
-        else:
-            return 'Invalid username or password'
-    return render_template('index.html')
+            print("the password is correct")
+            return jsonify({"message": "Login successful", "redirect": url_for('dashboard')})
+    return jsonify({"message": "Invalid credentials"}), 401
 
-@app.route('/regsuccess')
+@app.route('/reg_success')
 def reg_success():
-    email = request.args.get('email')
-    first_name = request.args.get('first_name')
-    return render_template('regsuccess.html', email=email, first_name=first_name)
+#   email = request.args.get('email')
+#   first_name = request.args.get('first_name')
+# , email=email, first_name=first_name
+    return render_template('regSuccess.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    clinicians = Clinician.query.all()
+    clinicians_data = [{'id': clinician.id, 'name': clinician.name} for clinician in clinicians]
+    return render_template('dashboard.html', clinicians=clinicians_data)
 
 ###---###
 

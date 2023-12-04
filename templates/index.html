@@ -44,7 +44,7 @@
     <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
     <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
     <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
-    <a href="login.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN/REGISTER</a>
+    <a href="index.html#registration" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN/REGISTER</a>
   </div>
 </div>
 
@@ -54,8 +54,8 @@
  <!-- Welcome Section -->
   <div class="w3-content w3-black w3-center w3-padding-64" id="welcome" style="background-image: url(https://newsroom.unsw.edu.au/sites/default/files/thumbnails/image/unsw_library_lawn_2_0_3.jpg);">
     <div class="w3-container w3-center" id="welcome-page">
-      <img src="logo.png" class="w3-round w3-margin-bottom" alt="logo" style="width:20%">
       <h2 class="w3-wide" style="font-weight: 500;">EPNET: A Web-based Tool Utilising Deep Neural Network to Predict Significant Enhancer Signals</h2>
+      <button class="w3-button w3-light-grey" onclick="location.href = 'run_model.html'">Run Model</button>
       </div>
 </div>
 
@@ -63,7 +63,6 @@
  <div class="w3-content w3-center w3-padding-64" id="welcome" >
   <div class="w3-container w3-center" id="welcome-page">
     <h2 class="w3-wide" style="font-weight: 500;">Introduction</h2>
-    <p>We want to have a paragraph of short introduction about the model</p>
     <p>EPNET is a biologically informed deep neural network to predict and interpret enhancer-promoter interactions. Given a set of enhancer and promoter interactions as input, EPNET outputs the pathways and processes associated with the interaction, thus providing insight into underlying biological mechanisms of phenotypes and diseases.</p>
     <p>Authors: Jade Liang, Sally Chen</p>
     <p>Citation</p>
@@ -74,15 +73,17 @@
   <div class="w3-content w3-black w3-center w3-padding-64" style="max-width:800px" id="registration">
     <h2 class="w3-wide w3-center">Please Login Here</h2>
     <div class="w3-container w3-center">
-      <form>
+      <form id="loginForm" onsubmit="checkPassword()">
         <label for="email">Email:</label>
-        <input class="w3-border" type="text" id="email" name="email">
+        <input class="w3-border" type="text" id="email-input" name="email">
         <label for="password">Password:</label>
-        <input class="w3-border" type="password" id="password" name="password">
-        <button class="w3-button w3-light-grey" onclick="displayFileContents()">Login</button>  <!-- Here to store to the backend? -->
+        <input class="w3-border" type="password" id="password-input" name="password">
+        <input class="w3-button w3-light-grey" type="submit" value="Login">
     </form>
       <p>Doesn't have an account? </p>
       <button class="w3-button w3-light-grey" onclick="document.getElementById('registrationModal').style.display='block'">Register Here</button>
+      <span id="message-alert"></span>
+
     </div>
   </div>
 
@@ -229,7 +230,7 @@ function validateDateOfBirth(input) {
   
   // If no input
   if (input.value == "") {
-    errorElement.textContent = ""
+    errorElement.textContent = ""; 
     return false;
   } else if (!dateRegex.test(input.value)) { // Input exists but not in correct format
     errorElement.textContent = "Invalid DOB";
@@ -253,7 +254,7 @@ function validateDateOfBirth(input) {
 }
 
 // Function to validate register form
-function validateForm() {
+function validateForm(event) {
 
   // Check if email is valid
   var emailInput = document.getElementById("email");
@@ -286,11 +287,65 @@ function validateForm() {
     return false;
   } else {
     console.log("Nothing wrong")
-
-    // Here should save to 
+    event.preventDefault();
+    var formData = new FormData(this);
+    fetch('/register', {
+        method: 'POST',
+        body: JSON.stringify({
+            email: formData.get('email'),
+            password: formData.get('password'),
+            first_name: formData.get('firstname'),
+            last_name: formData.get('lastname'),
+            gender: formData.get('gender'),
+            dob: formData.get('dob'),
+            institute: formData.get('institute'),
+            specialties: formData.get('specialties')
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.redirect) {
+            window.location.href = data.redirect;
+        } 
+      if (data.message) {
+          messageContainter = document.getElementById("message-alert");
+          messageContainter.textContent = data.message; 
+      }
+    })
+    .catch(error => console.error('Error:', error));
     return true;
   }
 }
+
+function checkPassword(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    fetch('/login', {
+        method: 'POST',
+        body: JSON.stringify({
+            email: formData.get('email'),
+            password: formData.get('password')
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.redirect) {
+            window.location.href = data.redirect;
+        } 
+      if (data.message) {
+          messageContainter = document.getElementById("message-alert");
+          messageContainter.textContent = data.message; 
+      }
+    })
+    .catch(error => console.error('Error:', error));
+    return true;
+};
 
 </script>
 
@@ -303,7 +358,7 @@ function validateForm() {
         <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Registration</h2>
       </header>
 
-      <form id="registrationForm" onsubmit="return validateForm()" method="POST">
+      <form id="registrationForm" onsubmit="return validateForm()">
         <div class="w3-container" id="login-info">
           <h4 class="w3-wide">Login Information</h4>
           <p><label>Email Address</label></p>
@@ -342,9 +397,9 @@ function validateForm() {
             </select>
             <!--Fields that are not required and need to be validated-->
             <p><label>Institution</label></p>
-            <input class="w3-input w3-border" id="dob" name="institution" type="text" maxlength="10" placeholder="Enter Institution">
+            <input class="w3-input w3-border" id="institution" name="institution" type="text" maxlength="10" placeholder="Enter Institution">
             <p><label>Specialties</label></p>
-            <input class="w3-input w3-border" id="dob" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
+            <input class="w3-input w3-border" id="specialties" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
         </div>
        
         <button class="w3-button w3-block w3-light-grey w3-padding-16 w3-section w3-right" onclick="validateForm()">REGISTER <i class="fa fa-check"></i></button>
@@ -352,23 +407,6 @@ function validateForm() {
       </form>
     </div>
   </div>
-
-  <!-- The Inquires/Contact Section -->
-  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
-    <h2 class="w3-wide w3-center">CONTACT US</h2>
-    <div class="w3-row">
-      <div class="w3-center w3-large w3-margin-bottom">
-        <p class="w3-opacity w3-center"><i>Please contact us below if you have any questions</i></p>
-        <i class="w3-center fa fa-map-marker" style="width:30px"></i> Samuels Building, E26, Samuel Terry Ave, Kensington NSW 2052<br>
-        <i class="w3-center fa fa-phone" style="width:30px"></i> Phone: +61 123 456 789<br>
-        <i class="w3-center fa fa-envelope" style="width:30px"> </i> Email: <a href="bml@gmail.com">bml@@gmail.com</a><br>
-      </div>
-      <div class="w3-col m6">
-      </div>
-    </div>
-  </div>
-<!-- End Page Content -->
-</div>
 
 
 <!-- Footer -->

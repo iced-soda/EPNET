@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Template Altered from --> 
+<head>
+<title>Web-based tool to investigate Enhancer Signals</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  body {font-family: "Lato", sans-serif}
+  .mySlides {display: none}
+
+  /* .input-container {
+    display: flex;
+    align-items: center;
+  } */
+
+  /* Style for the error message */
+  .error-message {
+    display: none; /* Initially hide the error message */
+    white-space: nowrap; /* Prevent line breaks */
+  }
+
+  /* Style for error messages */
+  .red{
+    color: red;
+  }
+
+  /* Style for non-error messages */
+  .green{
+    color: green;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+    <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
+    <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+    <a href="login.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN/REGISTER</a>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+    <div class="w3-content w3-black w3-center w3-padding-64">
+        <form>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            
+            <button class="w3-button w3-light-grey" onclick="displayFileContents()">Login</button>  <!-- Here to store to the backend? -->
+            <label for="register">Doesn't have an account?</label>
+            <button class="w3-button w3-light-grey" id="register" onclick="displayFileContents()">Register</button>  <!-- Here to store to the backend? -->
+        </form>
+    </div>
+    
+  <!-- Registration Modal -->
+  <div id="registrationModal" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-light-grey w3-center w3-padding-24">
+        <span onclick="document.getElementById('registrationModal').style.display='none'"
+       class="w3-button w3-light-grey w3-xlarge w3-display-topright">x</span>
+        <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Registration</h2>
+      </header>
+
+      <form id="registrationForm" onsubmit="return validateForm()" method="POST" action="/register">
+        <div class="w3-container" id="login-info">
+          <h4 class="w3-wide">Login Information</h4>
+          <p><label>Email Address</label></p>
+          <input class="w3-input w3-border" id="email" name="email" type="text" placeholder="Enter Email" required
+            onchange="validateEmailAddress(this)">
+          <span class="error-message"></span>
+          <p><label>Password</label></p>
+          <input class="w3-input w3-border" id="password" name="password" type="password" placeholder="Enter password" required
+            onchange="validatePassword(this)">
+          <span class="error-message"></span>
+          <p><label>Re-enter Password</label></p>
+          <input class="w3-input w3-border" id="reenter-password" name="reenter-password" type="password" placeholder="Re-enter password" required
+            onchange="validateReenter(this)">
+          <span class="error-message"></span>
+        </div>
+        <div class="w3-container" id="personal-info" > 
+          <h4 class="w3-wide">Personal Information</h4>
+          <p><label>First Name</label></p>
+          <input class="w3-input w3-border" id="firstname" name="firstname" type="text" placeholder="First Name" required
+            onchange="validateFirstName(this)">
+          <span class="error-message"></span>
+          <p><label>Last Name</label></p>
+          <input class="w3-input w3-border" id="lastname" name="lastname" type="text" placeholder="Last Name" required
+            onchange="validateLastName(this)">
+          <span class="error-message"></span>
+          <p><label>Date of Birth (dd/mm/yyyy)</label></p>
+          <input class="w3-input w3-border" id="dob" name="dob" type="text" maxlength="10" placeholder="Enter DOB" required
+            onchange="validateDateOfBirth(this)">
+          <span class="error-message"></span>
+          <p><label for="gender">Gender</label></p>
+            <select name="Gender" id="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+              <option value="not">Prefer Not to Say</option>
+            </select>
+            <!--Fields that are not required and need to be validated-->
+            <p><label>Institution</label></p>
+            <input class="w3-input w3-border" id="dob" name="institution" type="text" maxlength="10" placeholder="Enter Institution">
+            <p><label>Specialties</label></p>
+            <input class="w3-input w3-border" id="dob" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
+        </div>
+       
+        <button class="w3-button w3-block w3-light-grey w3-padding-16 w3-section w3-right" onclick="validateForm()">REGISTER <i class="fa fa-check"></i></button>
+        <button class="w3-button w3-red w3-section" onclick="document.getElementById('registrationModal').style.display='none'">Close <i class="fa fa-remove"></i></button>
+      </form>
+    </div>
+  </div>
+
+  
+<!-- End Page Content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <div class="w3-row">
+    <div class="w3-center w3-large w3-margin-bottom">
+      <i class="w3-center">Biomedical Machine Learning Lab (BML)</i><br>
+      <i class="w3-center fa fa-map-marker" style="width:30px"></i> 518, Samuels Building, F25, Samuel Terry Ave, Kensington NSW 2052<br>
+      <i class="w3-center fa fa-phone" style="width:30px"></i> Phone: +61 123 456 789<br>
+      <i class="w3-center fa fa-envelope" style="width:30px"> </i> Email: <a href="healthcodex@gmail.com">healthcodex@gmail.com</a><br>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
