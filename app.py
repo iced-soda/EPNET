@@ -20,7 +20,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_root)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(project_root, 'backend_database.sql')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
 
@@ -31,18 +31,6 @@ params_file = './train/params/P1000/pnet/onsplit_average_reg_10_tanh_large_testi
 # load db
 print("linking to database")
 db = SQLAlchemy(app)
-
-# load model 
-print("1")
-loader = importlib.machinery.SourceFileLoader('params', params_file)
-params = loader.load_module()
-model_params_ = deepcopy(params.models[0])
-model = nn.Model(**model_params_['params'])
-model.load_model(filename)
-
-# Set the upload folder
-# UPLOAD_FOLDER = '~/9450/9450_MainProjectWeb/uploads'
-ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -78,9 +66,9 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # If without CORS (and wepbage files located within EPNET model directory)
-# @app.route('/')
-# def index():
-#     return render_template('run_model.html')
+@app.route('/')
+def index():
+     return render_template('index.html')
 
 ### Login Routes ###
 @app.route('/register', methods=['POST'])
@@ -125,13 +113,32 @@ def reg_success():
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
-        return redirect(url_for('login'))
+        return jsonify({"message": "Logout successful", "redirect": url_for('index')})
 
     clinicians = Clinician.query.all()
     clinicians_data = [{'id': clinician.id, 'name': clinician.name} for clinician in clinicians]
     return render_template('dashboard.html', clinicians=clinicians_data)
 
+@app.route('/logout')
+def logout():
+    # Remove user_id from session
+    session.pop('user_id', None)
+    
+    # Redirect to login page, home page, or any other page
+    return redirect(url_for('login'))  # Replace 'login' with the endpoint you want to redirect to
+
 ###---###
+# load model 
+print("1")
+loader = importlib.machinery.SourceFileLoader('params', params_file)
+params = loader.load_module()
+model_params_ = deepcopy(params.models[0])
+model = nn.Model(**model_params_['params'])
+model.load_model(filename)
+
+# Set the upload folder
+# UPLOAD_FOLDER = '~/9450/9450_MainProjectWeb/uploads'
+ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
 @app.route('/index')
 def home():
