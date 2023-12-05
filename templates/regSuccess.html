@@ -25,13 +25,26 @@ body {font-family: "Lato", sans-serif}
   </div>
 </div>
 
-<div class="w3-content w3-center" style="max-width:2000px;margin-top:46px">
+<div class="w3-content w3-center w3-padding-large" style="max-width:2000px;margin-top:46px">
   <h4>Registration Successful! Please return to login</h4>
- <div id="firstname-output">Name: {{ name }}</div>
- <div id="email-output">Email: {{ email }}</div>
+ <!-- <div id="firstname-output">Name: {{ name }}</div>
+ <div id="email-output">Email: {{ email }}</div> -->
   <h4><a href="index.html">Back</a></h4>
 </div>
 
+<script>
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  const name = sessionStorage.getItem('name');
+  const email = sessionStorage.getItem('email');
+  
+  if (name && email) {
+      document.getElementById('firstname-output').textContent = 'Name: ' + name;
+      document.getElementById('email-output').textContent = 'Email: ' + email;
+  }
+});
+
+</script>
 
 <!-- Footer -->
 <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">

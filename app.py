@@ -22,15 +22,28 @@ sys.path.append(project_root)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-CORS(app)
+# load db
+print("linking to database")
+db = SQLAlchemy(app)
+# CORS(app)
+
+# Setting a secret key for assigning session cookie
+secret_key = os.urandom(16)
+print(secret_key)
+app.secret_key = 'your_random_secret_key_here'
 
 filename = './_logs/enh_vs_genes/log/fs/P-net.h5'
 
 params_file = './train/params/P1000/pnet/onsplit_average_reg_10_tanh_large_testing.py'
 
-# load db
-print("linking to database")
-db = SQLAlchemy(app)
+###---###
+# load model 
+print("1")
+loader = importlib.machinery.SourceFileLoader('params', params_file)
+params = loader.load_module()
+model_params_ = deepcopy(params.models[0])
+model = nn.Model(**model_params_['params'])
+model.load_model(filename)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,6 +61,9 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+    def __repr__(self):
+        return f'<User {self.first_name} ID {self.id}>'
 
 class Clinician(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,89 +82,78 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # If without CORS (and wepbage files located within EPNET model directory)
-@app.route('/')
-def index():
-     return render_template('index.html')
+# @app.route('/home')
+# def home():
+#      return render_template('index.html')
 
 ### Login Routes ###
 @app.route('/register', methods=['POST'])
 def register():
-
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    first_name = data['firstname']
-    last_name = data['lastname']
-    gender = data['gender']
-    dob = data['dob']
-    institute = data['institute']
-    specialties = data['specialties']
+    print('attempted to register')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    first_name = request.form.get('firstname')
+    last_name = request.form.get('lastname')
+    gender = request.form.get('gender')
+    dob = request.form.get('dob')
+    institute = request.form.get('institute')
+    specialties = request.form.get('specialties')
     user = User(email=email, first_name=first_name, last_name=last_name, gender=gender, dob=dob, institute=institute, specialties=specialties)
     user.set_password(password)
+
+    # Check for existing email address: 
+    if User.query.filter_by(email=email).first() is not None:
+        return jsonify({"message": "The Email address has been registered"}),401
+    
     db.session.add(user)
     db.session.commit()
     return jsonify({"message": "Registration successful", "redirect": url_for('reg_success')})
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    print("Going here to login")
-    data = request.get_json()
-    if request.method == 'POST':
-        email = data['email']
-        password = data['password']
-        user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            session['user_id'] = user.id
-            print("the password is correct")
-            return jsonify({"message": "Login successful", "redirect": url_for('dashboard')})
+    print('attempted to login')
+    email = request.form.get('email-input')
+    password = request.form.get('password-input')
+    user = User.query.filter_by(email=email).first()
+    print(user)
+    if user and user.check_password(password): # validated password
+        session['user_id'] = user.id
+        print("the password is correct")
+        return jsonify({"message": "Login successful", "redirect": url_for('dashboard')})
     return jsonify({"message": "Invalid credentials"}), 401
 
-@app.route('/reg_success')
+@app.route('/regSuccess.html')
 def reg_success():
 #   email = request.args.get('email')
 #   first_name = request.args.get('first_name')
 # , email=email, first_name=first_name
     return render_template('regSuccess.html')
 
-@app.route('/dashboard')
+@app.route('/dashboard.html')
 def dashboard():
-    if 'user_id' not in session:
-        return jsonify({"message": "Logout successful", "redirect": url_for('index')})
-
     clinicians = Clinician.query.all()
-    clinicians_data = [{'id': clinician.id, 'name': clinician.name} for clinician in clinicians]
+    clinicians_data = [{'id': clinician.clinicianID, 'first_name': clinician.first_name, 'last_name': clinician.last_name} for clinician in clinicians]
     return render_template('dashboard.html', clinicians=clinicians_data)
+
 
 @app.route('/logout')
 def logout():
     # Remove user_id from session
     session.pop('user_id', None)
-    
     # Redirect to login page, home page, or any other page
-    return redirect(url_for('login'))  # Replace 'login' with the endpoint you want to redirect to
+    return redirect(url_for('home'))  # Replace 'login' with the endpoint you want to redirect to
 
-###---###
-# load model 
-print("1")
-loader = importlib.machinery.SourceFileLoader('params', params_file)
-params = loader.load_module()
-model_params_ = deepcopy(params.models[0])
-model = nn.Model(**model_params_['params'])
-model.load_model(filename)
-
-# Set the upload folder
-# UPLOAD_FOLDER = '~/9450/9450_MainProjectWeb/uploads'
 ALLOWED_EXTENSIONS = {'csv', 'txt'}
 
-@app.route('/index')
+@app.route('/index.html')
 def home():
-    return render_template('index_html')
+    return render_template('index.html')
 
-@app.route('/run_model')
+@app.route('/run_model.html')
 def run_model():
     return render_template('run_model.html')
 
-@app.route('/documentation')
+@app.route('/documentation.html')
 def documentation():
     return render_template('documentation.html')
 

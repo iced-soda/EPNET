@@ -69,20 +69,20 @@
     </div>
 </div>
 
- <!-- The Registration Section -->
+ <!-- The Login/Registration Section -->
   <div class="w3-content w3-black w3-center w3-padding-64" style="max-width:800px" id="registration">
     <h2 class="w3-wide w3-center">Please Login Here</h2>
     <div class="w3-container w3-center">
-      <form id="loginForm" onsubmit="checkPassword()">
+      <form id="loginForm" onsubmit="checkLogin(event)">
         <label for="email">Email:</label>
-        <input class="w3-border" type="text" id="email-input" name="email-input">
+        <input class="w3-border" type="text" id="email-input" name="email-input" required>
         <label for="password">Password:</label>
-        <input class="w3-border" type="password" id="password-input" name="password-input">
-        <input class="w3-button w3-light-grey" type="submit" value="Login">
+        <input class="w3-border" type="password" id="password-input" name="password-input" required>
+        <button class="w3-button w3-light-grey" type="submit" value="Login">Login</button>
     </form>
+      <p id="message-alert"></p>
       <p>Doesn't have an account? </p>
       <button class="w3-button w3-light-grey" onclick="document.getElementById('registrationModal').style.display='block'">Register Here</button>
-      <p id="message-alert"></p>
 
     </div>
   </div>
@@ -255,7 +255,7 @@ function validateDateOfBirth(input) {
 
 // Function to validate register form
 function validateForm(event) {
-
+  event.preventDefault();
   // Check if email is valid
   var emailInput = document.getElementById("email");
   var isValidEmail = validateEmailAddress(emailInput); 
@@ -276,9 +276,7 @@ function validateForm(event) {
   var isValidDob = validateDateOfBirth(dobInput);
 
   var genderInput = document.getElementById("gender");
-
-  var instInput = document.getElementById("institution");
-
+  var instInput = document.getElementById("institute");
   var specialtiesInput = document.getElementById("specialties");
   
   if (isValidEmail === false ||
@@ -293,23 +291,11 @@ function validateForm(event) {
     return false;
   } else {
     console.log("Nothing wrong")
-    event.preventDefault();
-    var formData = new FormData(this);
+    var form = document.getElementById('registrationForm');
+    var formData = new FormData(form);
     fetch('/register', {
-        method: 'POST',
-        body: JSON.stringify({
-            email: formData.get('email'),
-            password: formData.get('password'),
-            first_name: formData.get('firstname'),
-            last_name: formData.get('lastname'),
-            gender: formData.get('gender'),
-            dob: formData.get('dob'),
-            institute: formData.get('institute'),
-            specialties: formData.get('specialties')
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+      method: 'POST',
+      body: formData
     })
     .then(response => response.json())
     .then(data => {
@@ -317,8 +303,9 @@ function validateForm(event) {
             window.location.href = data.redirect;
         } 
       if (data.message) {
-          messageContainter = document.getElementById("message-alert");
-          messageContainter.textContent = data.message; 
+          messageContainer = document.getElementById("message-alert");
+          messageContainer.textContent = data.message; 
+          window.alert(data.message);
       }
     })
     .catch(error => console.error('Error:', error));
@@ -326,32 +313,29 @@ function validateForm(event) {
   }
 }
 
-function checkPassword(event) {
-    event.preventDefault();
-    var formData = new FormData(this);
-    fetch('/login', {
-        method: 'POST',
-        body: JSON.stringify({
-            email: formData.get('email'),
-            password: formData.get('password')
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.redirect) {
-            window.location.href = data.redirect;
-        } 
-      if (data.message) {
-          messageContainter = document.getElementById("message-alert");
-          messageContainter.textContent = data.message; 
-      }
-    })
-    .catch(error => console.error('Error:', error));
-    return true;
-};
+// Function to check login details
+function checkLogin(event) {
+  event.preventDefault();
+  var form = document.getElementById('loginForm');
+  var formData = new FormData(form);
+  fetch('/login', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.redirect) {
+          window.location.href = data.redirect;
+      } 
+    if (data.message) {
+        messageContainer = document.getElementById("message-alert");
+        messageContainer.textContent = data.message; 
+        window.alert(data.message);
+    }
+  })
+  .catch(error => console.error('Error:', error));
+  return true
+}
 
 </script>
 
@@ -364,7 +348,7 @@ function checkPassword(event) {
         <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Registration</h2>
       </header>
 
-      <form id="registrationForm" onsubmit="return validateForm()">
+      <form id="registrationForm" onsubmit="validateForm(event)">
         <div class="w3-container" id="login-info">
           <h4 class="w3-wide">Login Information</h4>
           <p><label>Email Address</label></p>
@@ -395,20 +379,20 @@ function checkPassword(event) {
             onchange="validateDateOfBirth(this)">
           <span class="error-message"></span>
           <p><label for="gender">Gender</label></p>
-            <select name="Gender" id="gender">
+            <select name="gender" id="gender" required>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
               <option value="not">Prefer Not to Say</option>
             </select>
             <!--Fields that are not required and need to be validated-->
-            <p><label>Institution</label></p>
-            <input class="w3-input w3-border" id="institution" name="institution" type="text" maxlength="10" placeholder="Enter Institution">
-            <p><label>Specialties</label></p>
-            <input class="w3-input w3-border" id="specialties" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
+          <p><label>Institution</label></p>
+          <input class="w3-input w3-border" id="institute" name="institute" type="text" maxlength="10" placeholder="Enter Institution">
+          <p><label>Specialties</label></p>
+          <input class="w3-input w3-border" id="specialties" name="specialties" type="text" maxlength="10" placeholder="Enter Specialties">
         </div>
        
-        <button class="w3-button w3-block w3-light-grey w3-padding-16 w3-section w3-right" onclick="validateForm()">REGISTER <i class="fa fa-check"></i></button>
+        <button class="w3-button w3-block w3-light-grey w3-padding-16 w3-section w3-right" type="submit">REGISTER <i class="fa fa-check"></i></button>
         <button class="w3-button w3-red w3-section" onclick="document.getElementById('registrationModal').style.display='none'">Close <i class="fa fa-remove"></i></button>
       </form>
     </div>

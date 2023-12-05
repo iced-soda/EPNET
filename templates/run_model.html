@@ -73,7 +73,7 @@
         formData.append('fileInput', fileInput.files[0]);
 
         // Make a POST request to the Flask backend with the FormData
-        fetch('/predict', {
+        fetch('predict', {
           method: 'POST',
           body: formData,
         })
@@ -89,33 +89,33 @@
         });
       }
 
-    function displayFileContents() {
-      const fileInput = document.getElementById('fileInput');
-      const fileContentsElement = document.getElementById('fileContents');
-      const inputShapeElement = document.getElementById('inputShape');
+      function displayFileContents() {
+        const fileInput = document.getElementById('fileInput');
+        const fileContentsElement = document.getElementById('fileContents');
+        const inputShapeElement = document.getElementById('inputShape');
 
-      const file = fileInput.files[0];
-      const reader = new FileReader();
+        const file = fileInput.files[0];
+        const reader = new FileReader();
 
-      reader.onload = function (e) {
-        // Display the file contents
-        const fileContents = e.target.result;
-        fileContentsElement.textContent = fileContents;
+        reader.onload = function (e) {
+          // Display the file contents
+          const fileContents = e.target.result;
+          fileContentsElement.textContent = fileContents;
 
-        // Calculate the number of rows and columns
-        const rows = fileContents.split('\n').length;
-        const columns = fileContents.split('\n')[0].split('\t').length;
+          // Calculate the number of rows and columns
+          const rows = fileContents.split('\n').length;
+          const columns = fileContents.split('\n')[0].split('\t').length;
 
-        // Display the file information
-        inputShapeElement.textContent = `Rows: ${rows}\nColumns: ${columns}`;
-      };
+          // Display the file information
+          inputShapeElement.textContent = `Rows: ${rows}\nColumns: ${columns}`;
+        };
 
-      // Read the file as text
-      reader.readAsText(file);
+        // Read the file as text
+        reader.readAsText(file);
 
-      // Prevent the form from submitting (prevents page refresh)
-      event.preventDefault();
-    }
+        // Prevent the form from submitting (prevents page refresh)
+        event.preventDefault();
+      }
     </script>
   </div>
 

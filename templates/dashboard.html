@@ -3,34 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="container mt-4">
-        <h2>Clinicians Dashboard</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <!-- Add more column headers as per your Clinician model -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for clinician in clinicians %}
-                <tr>
-                    <td>{{ clinician.id }}</td>
-                    <td>{{ clinician.name }}</td>
-                    <!-- Add more data fields as per your Clinician model -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{{ url_for('logout') }}" class="w3-button w3-red" id="logout">Logout</a>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-black w3-card">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+      <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
+      <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+    </div>
+</div>
+
+<div class="w3-content" style="max-width:1000px;margin-top:80px">
+    <h2>Clinicians Dashboard</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <!-- Add more column headers as per your Clinician model -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for clinician in clinicians %}
+            <tr>
+                <td>{{ clinician.id }}</td>
+                <td>{{ clinician.name }}</td>
+                <!-- Add more data fields as per your Clinician model -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('logout') }}" class="w3-button w3-red" id="logout">Logout</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
