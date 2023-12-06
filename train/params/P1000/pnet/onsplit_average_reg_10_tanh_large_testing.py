@@ -16,7 +16,7 @@ data_base = {'id': 'ALL', 'type': 'prostate_paper',
              }
 data = [data_base]
 
-n_hidden_layers = 2
+n_hidden_layers = 5
 base_dropout = 0.5
 wregs = [0.001] * 7
 wregs = [0.001] * 7
