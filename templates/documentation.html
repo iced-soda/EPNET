@@ -52,9 +52,15 @@
   <div class="w3-content w3-padding-64" id="documentation">
     <h2 style="font-weight: 500;">A Web-based Tool Utilising Deep Neural Network to Predict Significant Enhancer Signals</h2>
     <h4>How it works</h4>
-    <p>Here, we can have some images explaining different layers of the model.</p>
+    <p>EPNET is adapted from the original PNET model which predicts prostate cancer disease state.
+    <p>The network is built from the Reactome Pathways database a curated and peer-reviewed pathway database containing information on biological interactions that are grouped into hierarchical pathways. A set of relevant pathways were extracted from the database 
+      to generated a layered network representing known parent-child relationships between the pathways.</p>
+    <p>A matrix containing 0s and 1s representing enhancer-promoter interactions is split into training, validation and testing sets and then fed into the model to train its prediction.</p>
+    <p>The diagram below depicts the inner structure and layers of PNET. For EPNET, the input is enhancer-promoter interaction data instead of copy number variation data.</p>
+    <img src="/static/PNET_layers_diagram.png" atl="Diagram of PNET's structure and layers" width="1200" height="400">
     <h4>Performance</h4>
-    <p>Here, we can have some diagram and table showing the performance of this model</p>
+    <p>The plot below shows the loss of the model over different training epochs./p>
+    <img src="/static/loss_plot.png" alt="A plot of the model's losses vs epochs">
     <h4>Github Page</h4>
     <p>Please check out the GitHub Page of this project: <a href="https://github.com/iced-soda/EPNET">https://github.com/iced-soda/EPNET</a></p>
     </div>
