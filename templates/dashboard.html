@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 <!-- Navbar -->
 <div class="w3-top">
     <div class="w3-bar w3-black w3-card">
@@ -26,15 +26,23 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Fisrt Name</th>
+                <th>Last Name</th>
+                <th>Job Title</th>
+                <th>Institute</th>
+                <th>Specialties</th>
                 <!-- Add more column headers as per your Clinician model -->
             </tr>
         </thead>
         <tbody>
             {% for clinician in clinicians %}
             <tr>
-                <td>{{ clinician.id }}</td>
-                <td>{{ clinician.name }}</td>
+                <td>{{ clinician.clinicianID }}</td>
+                <td>{{ clinician.first_name }}</td>
+                <td>{{ clinician.last_name }}</td>
+                <td>{{ clinician.job_title }}</td>
+                <td>{{ clinician.institute }}</td>
+                <td>{{ clinician.specialties }}</td>
                 <!-- Add more data fields as per your Clinician model -->
             </tr>
             {% endfor %}

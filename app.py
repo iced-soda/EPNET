@@ -38,7 +38,6 @@ params_file = './train/params/P1000/pnet/onsplit_average_reg_10_tanh_large_testi
 
 ###---###
 # load model 
-print("1")
 loader = importlib.machinery.SourceFileLoader('params', params_file)
 params = loader.load_module()
 model_params_ = deepcopy(params.models[0])
