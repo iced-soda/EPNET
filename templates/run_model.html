@@ -67,6 +67,30 @@
       function makePrediction() {
         // Get input file from the form
         const fileInput = document.getElementById('fileInput');
+
+        // Declare variable to store enhancer ids
+        var enhancers = [];
+
+        // Create a FileReader to read the file
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var contents = e.target.result;
+            var lines = contents.split('\n');
+
+            // Start from the second line (index 1)
+            for (var i = 1; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line.length > 0) {
+                    var parts = line.split('\t');
+                    var enhancerName = parts[0]; 
+                    enhancers.push(enhancerName); // Store the enhancer name
+                }
+            }
+
+            // Now enhancers array contains all enhancer ids
+            console.log(enhancers);
+        };
+        reader.readAsText(fileInput.files[0]);
         
         // Create a FormData object to handle file uploads
         const formData = new FormData();
@@ -79,9 +103,28 @@
         })
         .then(response => response.json()) // Parse the JSON from the response
         .then(data => {
+          var predictions = data.prediction;
+          var predictionValues = [];
+
+          // Extract all the prediction values
+          for (var i = 0; i < predictions.length; i++) {
+              predictionValues.push(predictions[i][0]);
+}
+          // Store into a dictionary with their corresponding enhancer ids
+          // Initialize an empty object to hold the dictionary
+          var enhancerPredictions = {};
+
+          // Iterate over the arrays and add key-value pairs to the dictionary
+          for (var i = 0; i < enhancers.length; i++) {
+              enhancerPredictions[enhancers[i]] = predictionValues[i];
+          }
+          
+          // Convert to string to display on the webpage
+          var stringifiedPredictions = JSON.stringify(enhancerPredictions, null, 4); // 'null, 4' for pretty print
+
           // Display the prediction result on the webpage
           const predictionResultElement = document.getElementById('prediction');
-          predictionResultElement.textContent = JSON.stringify(data);
+          predictionResultElement.textContent = stringifiedPredictions;
         })
         .catch(error => {
           console.error('Error:', error);

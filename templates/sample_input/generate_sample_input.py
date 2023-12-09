@@ -1,10 +1,10 @@
 # Read the text file containing the matrix
-with open(r'C:\Users\sally\Documents\Uni\Research Thesis A\Enh_vs_Genes_Dataset\Enh_vs_Genes_matrix_number.txt', 'r') as file:
+with open('/PROJECTS/Sally/EPNET/_database/enh_vs_genes/Enh_vs_Genes_matrix_number.txt', 'r') as file:
     matrix_content = file.readlines()
 
 # Extract a sample from testing dataset
 
-selected_rows = matrix_content[0] + matrix_content[8]
+selected_rows = matrix_content[0] + matrix_content[8] + matrix_content[9]
 
 # Remove the trailing newline character from the last line
 if selected_rows.endswith('\n'):

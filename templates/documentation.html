@@ -55,7 +55,8 @@
     <p>EPNET is adapted from the original PNET model which predicts prostate cancer disease state.
     <p>The network is built from the Reactome Pathways database a curated and peer-reviewed pathway database containing information on biological interactions that are grouped into hierarchical pathways. A set of relevant pathways were extracted from the database 
       to generated a layered network representing known parent-child relationships between the pathways.</p>
-    <p>A matrix containing 0s and 1s representing enhancer-promoter interactions is split into training, validation and testing sets and then fed into the model to train its prediction.</p>
+    <p>A matrix containing 0s and 1s representing enhancer-promoter interactions is split into training, validation and testing sets and then fed into the model to train its prediction.
+      The trained model is able to predict whether a given enhancer is a true enhancer.</p>
     <p>The diagram below depicts the inner structure and layers of PNET. For EPNET, the input is enhancer-promoter interaction data instead of copy number variation data.</p>
     <img src="/static/PNET_layers_diagram.png" atl="Diagram of PNET's structure and layers" width="1200" height="400">
     <h4>Performance</h4>
