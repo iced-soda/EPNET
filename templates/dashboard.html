@@ -17,36 +17,33 @@
       <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
       <a href="documentation.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">DOCUMENTATION</a>
       <a href="run_model.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">RUN MODEL</a>
+      <a href="index.html#registration" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGIN/REGISTER</a>
     </div>
 </div>
 
 <div class="w3-content" style="max-width:1000px;margin-top:80px">
     <h2>Clinicians Dashboard</h2>
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fisrt Name</th>
-                <th>Last Name</th>
-                <th>Job Title</th>
-                <th>Institute</th>
-                <th>Specialties</th>
-                <!-- Add more column headers as per your Clinician model -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for clinician in clinicians %}
-            <tr>
-                <td>{{ clinician.clinicianID }}</td>
-                <td>{{ clinician.first_name }}</td>
-                <td>{{ clinician.last_name }}</td>
-                <td>{{ clinician.job_title }}</td>
-                <td>{{ clinician.institute }}</td>
-                <td>{{ clinician.specialties }}</td>
-                <!-- Add more data fields as per your Clinician model -->
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Job Title</th>
+            <th>Institute</th>
+            <th>Specialties</th>
+            <!-- Add more column headers as per your Clinician model -->
+        </tr>
+        {% for clinician in clinicians %}
+        <tr>
+            <td>{{ clinician.id }}</td>
+            <td>{{ clinician.first_name }}</td>
+            <td>{{ clinician.last_name }}</td>
+            <td>{{ clinician.job_title }}</td>
+            <td>{{ clinician.institute }}</td>
+            <td>{{ clinician.specialties }}</td>
+            <!-- Add more data fields as per your Clinician model -->
+        </tr>
+        {% endfor %}
     </table>
     <a href="{{ url_for('logout') }}" class="w3-button w3-red" id="logout">Logout</a>
 </div>

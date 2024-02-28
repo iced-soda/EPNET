@@ -80,11 +80,6 @@ with app.app_context():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# If without CORS (and wepbage files located within EPNET model directory)
-# @app.route('/home')
-# def home():
-#      return render_template('index.html')
-
 ### Login Routes ###
 @app.route('/register', methods=['POST'])
 def register():
@@ -131,9 +126,7 @@ def reg_success():
 @app.route('/dashboard.html')
 def dashboard():
     clinicians = Clinician.query.all()
-    clinicians_data = [{'id': clinician.clinicianID, 'first_name': clinician.first_name, 'last_name': clinician.last_name} for clinician in clinicians]
-    return render_template('dashboard.html', clinicians=clinicians_data)
-
+    return render_template('dashboard.html', clinicians=clinicians)
 
 @app.route('/logout')
 def logout():
